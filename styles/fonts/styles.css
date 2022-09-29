@@ -1,0 +1,37 @@
+body,
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    ta
+}
+.main-class{
+    display: flex;
+    justify-content: center;
+
+  }
+ 
+
+.black-cell{
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+    display: inline-block;
+    margin: -2px;
+    background-color: black;
+}
+    
+
+    
+.white-cell{
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        display: inline-block;
+        margin: -2px;
+        background-color: white;
+    }
+   
