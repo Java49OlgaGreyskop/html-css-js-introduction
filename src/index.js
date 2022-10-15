@@ -11,4 +11,5 @@ for(let i = 0; i < anchors.length; i++) {
         console.log("event -click on", anchors[i]);
          setDetails(anchors[i]);
     })
+
 }
