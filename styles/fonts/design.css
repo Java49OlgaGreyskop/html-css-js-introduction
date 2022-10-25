@@ -1,19 +1,19 @@
 @font-face {
     font-family: lakeshore;
     src: url("fonts/LAKESHOR-webfont.svg");
-    src: url("fonts/LAKESHOR-webfont.woff")
+    src: url("fonts/LAKESHOR-webfont.woff");
 }
 
 @font-face {
     font-family: airstream;
     src: url("fonts/Airstream-webfont.svg");
-    src: url("fonts/Airstream-webfont.woff")
+    src: url("fonts/Airstream-webfont.woff");
 }
 
 :root {
     --thumbnails-img-width: 20vw;
     --thumbnails-img-height: 15vw;
-    --thumbnails-title-height: calc(var(--thumbnails-img-height)* 0.33)
+    --thumbnails-title-height: calc(var(--thumbnails-img-height)* 0.33);
 }
 
 body,
@@ -37,7 +37,6 @@ body {
     font-family: lakeshore;
     text-transform: uppercase;
     letter-spacing: 5px;
-
 }
 
 .main-class {
@@ -58,6 +57,7 @@ body {
     align-items: center;
     margin-bottom: 10vh;
     margin-top: 5vh;
+    transition: 5s cubic-bezier(0.1, 2, 0.9, 1)
 }
 .hidden .details-container{
     display: none;
@@ -82,6 +82,7 @@ font-size: 1em;
 
 }
 
+
 .details-title {
     display: block;
     font-family: airstream;
@@ -91,11 +92,12 @@ font-size: 1em;
     position: absolute;
     left: 0;
     bottom: 2vh;
-    color: rgb(95, 8, 106);
-  
+    color: rgb(95, 8, 106);   
+}
+.details-audio
+{
     
 }
-
 .thumbnails-list {
     list-style: none;
     display: flex;
@@ -142,6 +144,10 @@ font-size: 1em;
 .thumbnails-item:hover {
     transform: scale(1.1);
     margin-left: 1vw;
+}
+.is-point{
+    transform: scale(0.001);
+    transition: 0s;
 }
 
 @media(min-width: 560px) {
@@ -192,6 +198,7 @@ font-size: 1em;
         justify-content: center;
         align-items: center;
         margin-bottom: 0;
+        
     }
 
 
