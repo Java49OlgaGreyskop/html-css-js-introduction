@@ -1,13 +1,15 @@
 
+
+
+function checkTeudatZehut(tzStr) 
+{
 let  str = '345152367';
 let teudatStrNumber = Array.from(str); 
 numberTeudatZehut = 0;
-
-function checkTeudatZehut(tzStr) {
 if(tzStr.length != str.length || isNaN(+tzStr)) {
     console.log("TZ=", tzStr, 'valid=', false);
     return false;
-    }}
+    }
 
 let char = '0'.charCodeAt();
 
@@ -31,5 +33,12 @@ let verifiedTeudatZeut = finishSymNumber % 10 == 0;
     console.log("Teudat zeut =", str, "=", finishSymNumber, 'verified=', verifiedTeudatZeut);
     return verifiedTeudatZeut;
 
- 
+}
+checkTeudatZehut('311769103');
+    checkTeudatZehut('311769129');
+    checkTeudatZehut('311759129');
+    checkTeudatZehut('336097183');
+    checkTeudatZehut('33609183');
+    checkTeudatZehut('33609as83');
+    checkTeudatZehut('012345674');
 
