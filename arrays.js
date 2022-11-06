@@ -1,44 +1,53 @@
 
-
-
-function checkTeudatZehut(tzStr) 
-{
-let  str = '345152367';
-let teudatStrNumber = Array.from(str); 
-numberTeudatZehut = 0;
-if(tzStr.length != str.length || isNaN(+tzStr)) {
-    console.log("TZ=", tzStr, 'valid=', false);
-    return false;
+function getNumberOddIndex(element) {
+    let res = element * 2;
+    if (res > 9) {
+        res -= 9;
     }
+    return res;
+}
+function getCurrentNumber(element, index) {
+    return index % 2 == 0 ? +element : getNumberOddIndex(element);
+}
+function getArrayForSum(teudatStrNumber) {
+    let array = Array.from(teudatStrNumber);
+    return array.map(getCurrentNumber);
+}
+function getSum(array) {
+    // let res = 0;
+    // for (let i = 0; i < array.length; i++) {
+    //     res += array[i];
+    // }
+    return array.reduce(function (res, cur) {
+        return res + cur;
+    }, 0);
+}
 
-let char = '0'.charCodeAt();
-
-// const result = teudatStrNumber.map((element, index) => index % 2 ==0 ? element: element*2);
-
-let result =teudatStrNumber.map (function(symbol, index){
-    let number = symbol.charCodeAt()-char
-    return index % 2 ==0 ?number: number * 2;
-})
- console.log(result);
-
-let teudat = result.map (function(number){
-    return number <=9 ? number : number-9;
-})
-console.log(teudat);
-let finishSymNumber =teudat.reduce(function(res, symbol){
-    return res + symbol },0);
-
-console.log(finishSymNumber);
-let verifiedTeudatZeut = finishSymNumber % 10 == 0;
-    console.log("Teudat zeut =", str, "=", finishSymNumber, 'verified=', verifiedTeudatZeut);
-    return verifiedTeudatZeut;
+function checkTeudatZehut(teudatStrNumber) {
+    //TODO
+    //control sum of for even index digit value, for odd index digit * 2
+    //control sum should be divide on 10 with no remainder
+    //example 123456782 => 1 + 4 +3 + 8 +5 + 3 + 7 + 7 + 2 => true
+    //    123456783 => 1 + 4 +3 + 8 +5 + 3 + 7 + 7 + 3 => false
+    let res = false;
+    if (teudatStrNumber.length == 9 && !isNaN(teudatStrNumber)) {
+        let arrayForSum = getArrayForSum(teudatStrNumber);
+        let sum = getSum(arrayForSum);
+        res = sum % 10 == 0;
+    }
+    return res
 
 }
-checkTeudatZehut('311769103');
-    checkTeudatZehut('311769129');
-    checkTeudatZehut('311759129');
-    checkTeudatZehut('336097183');
-    checkTeudatZehut('33609183');
-    checkTeudatZehut('33609as83');
-    checkTeudatZehut('012345674');
+function generateRandomTeudatZehut() {
+    //TODO
+    //returns string of 9 symbols matching checkTeudatZehut
+    //make 8 random digits from 0 to 9
+    //9 - th symbol should be with accordance of matching
+    //to get random digit Math.round(Math.random() * 9)
+}
+// console.log(checkTeudatZehut('123456783'));
 
+let numbers = ['123456782', '1234', 'abcd123', '123456783'];
+numbers.forEach(function (e) {
+    console.log(`teudat zehut: ${e}, return of the method checkTeudatZehut: ${checkTeudatZehut(e)}`)
+});
