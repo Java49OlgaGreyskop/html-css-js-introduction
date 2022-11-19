@@ -1,36 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Document </title>
-    <link rel="stylesheet" href="styles/wordle.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/marvelsField.css">
 </head>
 <body>
-   
-    <header class="logo">
-       Guess the word game
-     </header>
-     <p class ="desk">
-        The computer guessed the word, you task is to guess it
-    </p>
-     <div class = "conteiner">
-    <input  type="text" onchange="onChange(event)">
-    <input type="submit" value="Submit guess" class="guessSubmit">
-   
-    <section class = "word-guess">
-        <div class = "letter-guess"></div>
-        <div class = "letter-guess"></div>
-        <div class = "letter-guess"></div>
-        <div class = "letter-guess"></div>
-        <div class = "letter-guess"></div>
+    <input type="text" onchange="onChange(event)">
+    <section class="word-guess">
+        
     </section>
-    <p class="guess-trials"></p>
+    <p class="trial-number"></p>
+    <p class="word-trial"></p>
     <p class="game-over-message"></p>
+    <p class="guess-invitation"></p>
     <button id="play-again" onclick="startGame()">Play Again</button>
-        <script src="src/wordle.js"></script>
-</div>
-    </body>
+   <script src="src/marvelsField.js"></script> 
 </body>
 </html>

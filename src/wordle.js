@@ -1,77 +1,98 @@
-const words = ["pappy", "beach", "apple", "react", "basis",
- "anger", "hello", "dress"];
- let word;
-const N_LETTERS = 5;
-const letterElements = document.querySelectorAll(".letter-guess");
-const trialsElement = document.querySelector(".guess-trials");
+const worsd = ['pappy', 'apple', 'photo', 'java', 'chair'];
+const presentations = ['close relative', 'fruit', 'picture', 'programming language', 'furniture']
+
+const words = [
+    ['close relative', 'pappy'],
+    ['fruit', 'apple'],
+    ['picture','photo'],
+    ['programming language', 'java'],
+    ['furniture', 'chair']];
+
+let word;
+let index = 0;
+let prevInd = -1;
+let searchWordArr = [];
+const sectionElement = document.querySelector(".word-guess");
+let searchWordArrLen=0;
+//sectionElement.innerHTML = getDivsElements();
+let letterElements = document.querySelectorAll(".letter-guess");
+const trialNumberElement = document.querySelector(".trial-number");
+const wordTrialsElement = document.querySelector(".word-trial");
 const gameOverElement = document.querySelector(".game-over-message");
-const playAgainElement = document.getElementById("play-again");
-const INITIAL_TRIALS = 6;
-let trials = INITIAL_TRIALS; 
+const invitationElement = document.querySelector(".guess-invitation");
+//const playAgainElement = document.getElementById("play-again");
+
 let flGameOver = false;
-function showTrialsMessage(trials) {
-    
-        trialsElement.innerHTML = `remained ${trials} guess trials`;
-    
-   
+let trials = 0;
+
+function getDivsElements() {
+    index = getIndex();
+    console.log('word=', words[index][1]);
+    word = words[index][1];
+    searchWordArr = Array.from(word);
+    let res = searchWordArr.map(letter => `<div class="letter-guess">${letter}</div>`);
+    return res.join('');
 }
+
+function getIndex() {
+    index = Math.floor(Math.random() * words.length); 
+    while(index == prevInd) {
+        index = Math.floor(Math.random() * words.length);  
+    }
+    prevInd = index;
+    return index;
+}
+
+function showTrialMessage(trials, word) {    
+    trialNumberElement.innerHTML = `You have done ${trials} guess trials`;  
+    wordTrialsElement.innerHTML = `Your word is ${word}`;
+}
+
 function startGame() {
-    let index = Math.floor(Math.random() * words.length);
-    word = words[index];
-    trials = INITIAL_TRIALS
-    showTrialsMessage(trials);
-    gameOverElement.innerHTML ='';
-    playAgainElement.style.display='none';
-    letterElements.forEach(e => e.innerHTML='')
-    
+//    if(flGameOver) {
+        sectionElement.innerHTML = getDivsElements();
+        letterElements = document.querySelectorAll(".letter-guess");
+        flGameOver = false;
+//    }
+    trials = 0;
+    searchWordArrLen = 0;
     flGameOver = false;
+    gameOverElement.innerHTML =  "";
+    invitationElement.innerHTML = `Guess the word as "${words[index][0]}"`;
 }
 function onChange(event) {
-    const wordGuess = event.target.value;
-    
-    if(flGameOver){
-        alert("game is over")
+    let wordGuess = event.target.value.toLowerCase();
+    event.target.value = '';
+    if (flGameOver) {
+        alert("game is over");
         return;
     }
-    trials--;
-    showTrialsMessage(trials);
-    
-    event.target.value='';
-    if (wordGuess.length != N_LETTERS) {
-        alert(`A word should contain ${N_LETTERS} letters`)
-    } else {
-        const wordAr = Array.from(wordGuess);
-        wordAr.forEach((l, i) => letterElements[i].innerHTML = l)
-        const colors = wordAr.map((l, i) => {
-            let index = word.indexOf(l);
-            let res = 'red';
-            if (index  > -1) {
-                res = l == word[i] ? 'green' : 'yellow'
-            }
-            return res;
-        })
-        colors.forEach((c, i) =>
-         letterElements[i].style.color=c)
+    trials++;
+    showTrialMessage(trials, wordGuess);
+    const wordAr = Array.from(wordGuess);
+    let colors = searchWordArr.map((l) => {
+        return wordAr.includes(l) ? 'white' : 'black';
+    })
+    colors.forEach((color, index) => {
+        if(color === 'white') {
+            searchWordArrLen++;
+            letterElements[index].style.background=color;
+        }
+    });
+    if(searchWordArrLen === searchWordArr.length) {
+        endGame(true);
     }
-    const res = wordGuess == word;
-    if (trials == 0 || res) {
-        endGame(res);
-    }
-    
 }
 function endGame(isSuccess) {
     if (isSuccess) {
-        gameOverElement.innerHTML =  "Congratulations you are winner";
+        gameOverElement.innerHTML =  `Congratulations you are winner, the game is over.
+        Amount of trials is ${trials}`;
         gameOverElement.style.color = "green"
-    } else {
-        gameOverElement.innerHTML =  "Sorry you are loser";
-        gameOverElement.style.color = "red"
+        invitationElement.innerHTML = '';
     }
    
-   playAgainElement.style.display='block';
-   trialsElement.innerHTML = ''
-   flGameOver = true;
-   
-   
+    trialNumberElement.innerHTML = '';
+    wordTrialsElement.innerHTML = '';
+    flGameOver = true;
 }
-startGame()
+startGame();
