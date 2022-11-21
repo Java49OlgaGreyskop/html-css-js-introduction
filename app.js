@@ -1,20 +1,12 @@
+console.log(anagramm('cat', 'tac'));// true
+console.log(anagramm('good', 'dog'));//false
+console.log(anagramm('look','koll'))//false
+function anagramm(str1,str2){
+    if (str1.length !=str2.length)
+    return false;
 
-// учитывая массив слов вернуть массив со всеми анаграммами сгрупированными вместе 
- 
-var arr = ['cat', 'dog', 'tac', 'god', 'act'];
-
-var allAnagrams = function(arr) {
-    var anagrams = {};
-    arr.forEach(function(str) {
-        var recurse = function(ana, str) {
-            if (str === '') 
-                anagrams[ana] = 1;
-            for (var i = 0; i < str.length; i++)
-                recurse(ana + str[i], str.slice(0, i) + str.slice(i + 1));
-        };
-        recurse('', str);
-    });
-    return Object.keys(anagrams);
+    let sorted1 =str1.split('').sort().join('').toLowerCase();
+    let sorted2 =str2.split('').sort().join('').toLowerCase();
+    return (sorted1===sorted2);
 }
 
-console.log(allAnagrams(arr));
