@@ -10,3 +10,4 @@ function anagramm(str1,str2){
     return (sorted1===sorted2);
 }
 
+
