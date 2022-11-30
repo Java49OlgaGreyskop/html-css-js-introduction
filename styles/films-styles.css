@@ -1,0 +1,51 @@
+.body,
+html {
+    height: 100%;
+}
+
+.body{
+    display:flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.main-class {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin-left: 3vw;
+}
+
+.movies-list {
+    padding-left: 10vw;}
+    .movie-image {
+        height: 60vw;
+        width: 60vh;
+
+    }
+
+.movie-details {
+    
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    max-width: 25vw;
+   left: 55vh;
+   bottom: 30vh;
+
+
+}
+
+
+.movie-title {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 25vh;
+    overflow-y: auto;
+    justify-content: space-around;
+    padding-left: 0;
+
+}
