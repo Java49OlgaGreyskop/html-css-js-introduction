@@ -1,0 +1,48 @@
+.form-class{
+    display: flex;
+    flex-direction: column;
+ 
+}
+.two-inputs{
+    display: flex;
+    flex-direction:row;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+ 
+  
+}
+.imputs{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5vh;
+    
+}
+.date-label{
+display: block;
+flex-direction: column;
+width:auto;
+margin-left: auto;
+margin-right: auto;
+margin-top: 5vh;
+
+}
+.error{
+    display: flex;
+	align-items: center;  
+	justify-content: center;
+	text-align: center; 
+    font-style: italic;
+    font-size: 20px;
+   font-weight: 700;
+    color:red
+
+}
+.button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5vh;
+}
+
