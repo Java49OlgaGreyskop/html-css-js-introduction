@@ -1,7 +1,19 @@
 
 
 const inputElements = document.querySelectorAll(".form-class [name]");
-const errorElement = document.querySelector(".error");
+const MIN_SALARY = 1000;
+const MAX_SALARY = 40000;
+const MIN_YEAR = 1950;
+const maxYear = getMaxYear();
+const TIME_OUT_ERROR_MESSAGE = 5000;
+const ERROR_CLASS = "error";
+const company = new Company();
+const ACTIVE_CLASS = "active"
+
+const dateErrorElement = document.getElementById("date_error");
+const salaryErrorElement = document.getElementById("salary_error");
+const bouttonElements = document.querySelectorAll("buttons");
+const sectionElements = document.querySelectorAll("section");
 
 function onSubmit(event) {
     event.preventDefault();
@@ -12,33 +24,71 @@ function onSubmit(event) {
             return res;
         }, {}
     )
-    console.log(employee);
+    console.log(employee)
+    company.hireEmployee(employee);
+    
 }
-
 function onChange(event) {
+
     if (event.target.name == "salary") {
-        if (+event.target.value < 10000 || +event.target.value > 40000) {
-            event.target.value = errorMessage(event);
-            event.target.value = '';
-        }
-    }
-    if (event.target.name == "birthDate") {
-        bithDateCheck(event);
+        validateSalary(event.target)
+    } else if (event.target.name == "birthDate") {
+        validateBirthdate(event.target);
     }
 }
-
-function bithDateCheck(event) {
-    const date = (event.target.value).split('-');
-    const checkYear = +date[0];
-    if (checkYear < 1950 || checkYear > 2002) {
-        event.target.value = errorMessage(event);
+function validateSalary(element) {
+    const value = +element.value;
+    if (value < MIN_SALARY || value > MAX_SALARY) {
+        const message = value < MIN_SALARY ? `salary must be ${MIN_SALARY} or greater`
+            : `salary must be ${MAX_SALARY} or less`;
+        showErrorMessage(element, message, salaryErrorElement);
     }
-}
 
-function errorMessage(event) {
-    event.target.value = '';
-    errorElement.innerHTML = 'invalid value entered';
-    timer = setTimeout(() => {
+}
+function validateBirthdate(element) {
+    const value = +element.value.slice(0, 4);
+    if (value < MIN_YEAR || value > maxYear) {
+        const message = value < MIN_YEAR ? `year must be ${MIN_YEAR} or greater`:
+             `year must be ${maxYear} or less`;
+        showErrorMessage(element, message, dateErrorElement) ;    
+
+    }
+
+}
+function showErrorMessage(element, message, errorElement) {
+    element.classList.add(ERROR_CLASS);
+    errorElement.innerHTML = message;
+    setTimeout(() => {
+        element.classList.remove(ERROR_CLASS);
+        element.value = ''; 
         errorElement.innerHTML = '';
-    }, 5000);
+    }, TIME_OUT_ERROR_MESSAGE);
+}
+
+function getMaxYear() {
+    return new Date().getFullYear();
+}
+ function forms(formNode){
+    return new FormData(formNode);
+ }
+ 
+ 
+function Company() {
+    this.employees = [];
+}
+Company.prototype.hireEmployee = function(employee) {
+    this.employees.push(employee);
+}
+
+Company.prototype.getAllEmployees = function(){
+    return this.employees;
+}
+// Company.prototype.getEmployeesBySalary = function(salaryFrom, salaryTo) {
+//     //TODO
+// }
+function show(index) {
+    sectionElements.forEach(section => section.hidden = true);
+    bouttonElements.forEach(button => button.classList.remove(ACTIVE_CLASS));
+    sectionElements[index].hidden = false;
+    bouttonElements[index].classList.add(ACTIVE_CLASS);
 }
