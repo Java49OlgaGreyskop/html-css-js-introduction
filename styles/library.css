@@ -2,12 +2,14 @@ body, html {
     height: 100%;
 }
 body {
-    background-color: aliceblue;
+    background-color:blanchedalmond;
 }
 .form-title {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: bold;
+    margin-top: 10vh;
+
 }
 .form-class {
     display: flex;
@@ -42,10 +44,10 @@ body {
     color: red;
 }
 .active {
-    background-color: blue;
-    color: white;
+    background-color: rgb(222, 200, 205);
+    color: #a52020;
 }
-.employees-list {
+.books-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -54,27 +56,27 @@ body {
     overflow-y: scroll;
     justify-content: space-around;
 }
-.employees-item {
+.books-item {
     max-width: 30vw;
-    background-color: blue;
-    border-radius: 25%;
+    background-color: rgb(200, 36, 112);
     text-align: center;
-    border: 2px solid blue;
+    border: 2px solid rgb(255, 0, 81);
     margin-top: 10vh;
     overflow: hidden;
 }
-.employees-item-container {
+.books-item-container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
-.employees-item-paragraph {
+.books-item-paragraph {
     background-color: white;
     font-weight: bold;
 }
 .buttons-menu {
     display: flex;
     justify-content: center;
+   
 }
 .btn-menu+.btn-menu {
     margin-left: 10vw;
