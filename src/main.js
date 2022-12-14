@@ -1,47 +1,50 @@
-import { Library } from "./data/library.js";
-import { BookForm } from "./ui/BookForm.js";
-import { showErrorMessage } from "./ui/errorMessage.js";
+import { Company } from "./data/company.js";
+import { EmployeesList } from "./ui/EmploeesList.js";
+import { EmployeeForm } from "./ui/employeeForm.js";
+import { SalariesForm } from "./ui/SalariesForm.js";
 
-const MIN_Page = 50;
-const MAX_Page = 2000;
-const MIN_YEAR = 1980;
+const MIN_SALARY = 1000;
+const MAX_SALARY = 40000;
+const MIN_YEAR = 1950;
 
 
 const ACTIVE = "active"
 
 
-const pagesFromErrorElement = document.getElementById("pages_form_error");
-const booksListElement = document.getElementById("books-all");
-const authorListElement = document.getElementById("author-books");
-const pagesListElement = document.getElementById("books-with-pages");
+const listAllEmployees = new EmployeesList("employees-all");
+const listEmployeeBySalary = new EmployeesList("employees-salary");
 const sectionsElement = document.querySelectorAll("section");
 const buttonsMenuElement = document.querySelectorAll(".buttons-menu *");
-
-const library = new Library();
-
-const bookForm = new BookForm({idForm: "books_form", idDateInput: "date_input",idYearError: "year_error",
- idPagesInput: "pages_input", idPagesError: "pages_error", minPages: "minPages", maxPages: "maxPages",
-minYear: "minYear"})
-bookForm.addSubmitHandler((book) =>library.receivedBook(book))
+/************************************************************************** */
+//functions of Company
 
 
-function onChangePagesFrom(event) {
-    const value = +event.target.value;
-    if (pagesTo && value >= pagesTo) {
-        showErrorMessage(event.target, "pages 'from' must be less than pages 'to'",
-            pagesFromErrorElement);
-    } else {
-        pagesFrom = value;
-    }
-}
-function onChangePagesTo(event) {
-    const value = +event.target.value;
-    if (pagesFrom && value < pagesFrom) {
-        showErrorMessage(event.target, "Pages'To' must be greater than pages 'From'",
-            pagesFromErrorElement);
-    }
-    pagesTo = value;
-}
+const company = new Company();
+//functions of Employee Form
+
+
+
+
+const employeeForm = new EmployeeForm({idForm: "employee_form", idDateInput: "date_input",
+idSalaryInput: "salary_input", idDateError: "date_error", idSalaryError: "salary_error",
+ minYear: MIN_YEAR, minSalary: MIN_SALARY, maxSalary: MAX_SALARY})
+ employeeForm.addSubmitHandler((employee) => company.hireEmployee(employee))
+/************************************************************* */
+
+/********************************************************************************** */
+
+//functions of Salary Form
+
+const paramsSalaries =({idForm: "salary-form", idSalaryFromInput: "salaryFrom",idSalaryToInput: "salaryTo",
+idErrorMassage: "salary_form_error"})
+const salariesForm = new SalariesForm(paramsSalaries);
+salariesForm.addSubmitHandler((salariesObj) => {
+    const employees = company.getEmployeesBySalary(salariesObj.salaryFrom, salariesObj.salaryTo);
+   listEmployeeBySalary.showEmployees(employees);
+})
+
+
+   
 
 function showSection(index) {
     buttonsMenuElement.forEach(e => e.classList.remove(ACTIVE));
@@ -49,42 +52,11 @@ function showSection(index) {
     buttonsMenuElement[index].classList.add(ACTIVE);
     sectionsElement[index].hidden = false;
     if (index == 1) {
-        const books = library.getAllBooks();
-        booksListElement.innerHTML = getBooksItem(books);
+        const employees = company.getAllEmployees();
+       listAllEmployees.showEmployees(employees);
     }
 }
 
-function getBooksItem(books) {
-    return books.map(book =>
-        `<li class="books-item">
-              <div class="books-item-container">
-                 <p class="books-item-paragraph">Title: ${book.title} </p>
-                 <p class="books-item-paragraph">Author: ${book.author} </p>
-                 <p class="books-item-paragraph">Year publishing: ${book.year}</p>
-                 <p class="books-item-paragraph">Genre: ${book.Genre}</p>
-                 <p class="books-item-paragraph">Pages: ${book.pages}</p>
-              </div>
-          </li>`).join('');
-}
-function onSubmitAuthor(event) {
-    event.preventDefault();
-    const author = Array.from(inputAuthor)[0].value;
-    const books = library.getAuthor(author);
-    authorListElement.innerHTML = getBooksItem(books);
-}
-let pagesFrom = 0;
-let pagesTo = 0;
 
-function onSubmitPages(event) {
-    event.preventDefault();
-    const books = library.getBooksByPage(pagesFrom, pagesTo);
-    pagesListElement.innerHTML = getBooksItem(books);
-}
 
-window.onSubmit = onSubmit;
-window.onChange = onChange;
 window.showSection = showSection;
-window.onSubmitPages = onSubmitPages;
-window.onChangePagesFrom = onChangePagesFrom;
-window.onChangePagesTo = onChangePagesTo;
-window.onSubmitAuthor = onSubmitAuthor;
