@@ -1,94 +1,90 @@
-import { Company } from "./data/company.js";
-import { EmployeeForm } from "./ui/employeeForm.js";
+import { Library } from "./data/library.js";
+import { BookForm } from "./ui/BookForm.js";
 import { showErrorMessage } from "./ui/errorMessage.js";
 
-const MIN_SALARY = 1000;
-const MAX_SALARY = 40000;
-const MIN_YEAR = 1950;
+const MIN_Page = 50;
+const MAX_Page = 2000;
+const MIN_YEAR = 1980;
 
 
 const ACTIVE = "active"
 
 
-
-
-const salaryFormErrorElement = document.getElementById("salary_form_error");
-const employeesListElement = document.getElementById("employees-all");
-const employeesSalaryListElement = document.getElementById("employees-salary");
+const pagesFromErrorElement = document.getElementById("pages_form_error");
+const booksListElement = document.getElementById("books-all");
+const authorListElement = document.getElementById("author-books");
+const pagesListElement = document.getElementById("books-with-pages");
 const sectionsElement = document.querySelectorAll("section");
 const buttonsMenuElement = document.querySelectorAll(".buttons-menu *");
-/************************************************************************** */
-//functions of Company
+
+const library = new Library();
+
+const bookForm = new BookForm({idForm: "books_form", idDateInput: "date_input",idYearError: "year_error",
+ idPagesInput: "pages_input", idPagesError: "pages_error", minPages: "minPages", maxPages: "maxPages",
+minYear: "minYear"})
+bookForm.addSubmitHandler((book) =>library.receivedBook(book))
 
 
-const company = new Company();
-//functions of Employee Form
-
-
-
-
-const employeeForm = new EmployeeForm({idForm: "employee_form", idDateInput: "date_input",
-idSalaryInput: "salary_input", idDateError: "date_error", idSalaryError: "salary_error",
- minYear: MIN_YEAR, minSalary: MIN_SALARY, maxSalary: MAX_SALARY})
- employeeForm.addSubmitHandler((employee) => company.hireEmployee(employee))
-/************************************************************* */
-
-/********************************************************************************** */
-
-//functions of Salary Form
-
-let salaryFrom = 0;
-let salaryTo = 0;
-function onSubmitSalary(event) {
-    event.preventDefault();
-    const employees = company.getEmployeesBySalary(salaryFrom, salaryTo);
-    employeesSalaryListElement.innerHTML = getEmployeeItems(employees);
-
-
-   
-}
-function onChangeSalaryFrom(event) {
+function onChangePagesFrom(event) {
     const value = +event.target.value;
-    if (salaryTo && value >= salaryTo) {
-        showErrorMessage(event.target, "Salary 'from' must be less than Salary 'to'",
-        salaryFormErrorElement);
+    if (pagesTo && value >= pagesTo) {
+        showErrorMessage(event.target, "pages 'from' must be less than pages 'to'",
+            pagesFromErrorElement);
     } else {
-        salaryFrom = value;
+        pagesFrom = value;
     }
 }
-function onChangeSalaryTo(event) {
+function onChangePagesTo(event) {
     const value = +event.target.value;
-    if (salaryFrom && value < salaryFrom) {
-        showErrorMessage(event.target, "Salary 'To' must be greater than Salary 'From'",
-        salaryFormErrorElement);
+    if (pagesFrom && value < pagesFrom) {
+        showErrorMessage(event.target, "Pages'To' must be greater than pages 'From'",
+            pagesFromErrorElement);
     }
-    salaryTo = value;
+    pagesTo = value;
 }
+
 function showSection(index) {
     buttonsMenuElement.forEach(e => e.classList.remove(ACTIVE));
     sectionsElement.forEach(e => e.hidden = true)
     buttonsMenuElement[index].classList.add(ACTIVE);
     sectionsElement[index].hidden = false;
     if (index == 1) {
-        const employees = company.getAllEmployees();
-        employeesListElement.innerHTML = getEmployeeItems(employees);
+        const books = library.getAllBooks();
+        booksListElement.innerHTML = getBooksItem(books);
     }
 }
-function getEmployeeItems(employees) {
-    return employees.map (e => 
-        `<li class="employees-item">
-              <div class="employees-item-container">
-                 <p class="employees-item-paragraph">Name: ${e.employee_name} </p>
-                 <p class="employees-item-paragraph">Email: ${e.email} </p>
-                 <p class="employees-item-paragraph">Department: ${e.department}</p>
-                 <p class="employees-item-paragraph">Bithdate: ${e.birthDate}</p>
-                 <p class="employees-item-paragraph">Salary: ${e.salary}</p>
+
+function getBooksItem(books) {
+    return books.map(book =>
+        `<li class="books-item">
+              <div class="books-item-container">
+                 <p class="books-item-paragraph">Title: ${book.title} </p>
+                 <p class="books-item-paragraph">Author: ${book.author} </p>
+                 <p class="books-item-paragraph">Year publishing: ${book.year}</p>
+                 <p class="books-item-paragraph">Genre: ${book.Genre}</p>
+                 <p class="books-item-paragraph">Pages: ${book.pages}</p>
               </div>
           </li>`).join('');
 }
+function onSubmitAuthor(event) {
+    event.preventDefault();
+    const author = Array.from(inputAuthor)[0].value;
+    const books = library.getAuthor(author);
+    authorListElement.innerHTML = getBooksItem(books);
+}
+let pagesFrom = 0;
+let pagesTo = 0;
 
+function onSubmitPages(event) {
+    event.preventDefault();
+    const books = library.getBooksByPage(pagesFrom, pagesTo);
+    pagesListElement.innerHTML = getBooksItem(books);
+}
 
+window.onSubmit = onSubmit;
+window.onChange = onChange;
 window.showSection = showSection;
-window.onChangeSalaryTo = onChangeSalaryTo;
-window.onChangeSalaryFrom = onChangeSalaryFrom
-window.onSubmitSalary = onSubmitSalary
+window.onSubmitPages = onSubmitPages;
+window.onChangePagesFrom = onChangePagesFrom;
+window.onChangePagesTo = onChangePagesTo;
+window.onSubmitAuthor = onSubmitAuthor;
