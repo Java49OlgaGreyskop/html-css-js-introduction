@@ -18,4 +18,4 @@ function getEmployeeItems(employees) {
                  <p class="employees-item-paragraph">Salary: ${e.salary}</p>
               </div>
           </li>`).join('');
-}
+    }
