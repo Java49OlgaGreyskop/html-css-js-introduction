@@ -16,7 +16,7 @@ constructor(params){
     this.#inputElements = document.querySelectorAll(`#${params.idForm} [name]`);
     this.#dateInputElement = document.getElementById(params.idDateInput);
     this.#yearErrorElement = document.getElementById(params.idYearError);
-    this.#pagesInputElement = document.getElementById(params. IdPagesInput);
+    this.#pagesInputElement = document.getElementById(params. idPagesInput);
     this.#pagesErrorElement = document.getElementById(params.idpagesError);
     this.#minPages = params.minPages;
     this.#maxPages = params.maxPages;
@@ -25,17 +25,7 @@ constructor(params){
     this.onChange();
 }
 addSubmitHandler(processBooksFun){
-    this.#formElement.addEventListener("submit", (event) => {
-    event.preventDefault();
-    console.log("submitted");
-    const book = Array.from(this.#inputElements).reduce((res, car) => {
-        res[cur.name] = cur.value;
-        return res;
-    }, {}
-)
-console.log(book)
-processBooksFun(book)
-})
+    this.#formElement.addEventListener("submit", this.handler.bind(this, processBooksFun))
 }
 onChange() {
     this.#dateInputElement.addEventListener("change", (event) => {
@@ -48,7 +38,7 @@ onChange() {
 }
 validatePages(element) {
     const value = +element.value;
-    if (value < this.#minPages || value > this.maxPages) {
+    if (value < this.#minPages || value > this.#maxPages) {
         const message = value < this.#minPages ? `pages must be ${this.#minPages} or greater`
             : `pages must be ${this.#maxPages} or less`;
         showErrorMessage(element, message, this.#pagesErrorElement);
@@ -63,7 +53,17 @@ validateYear(element) {
         showErrorMessage(element, message, this.#yearErrorElement);
     }
 }
-}
+handler(processBooksFun,  event) {
+    event.preventDefault();
+    console.log("submitted");
+    const book = Array.from(this.#inputElements).reduce((res, cur) => {
+        res[cur.name] = cur.value;
+        return res;
+    }, {}
+)
+console.log(book);
+processBooksFun(book);
+}}
 function getMaxYear() {
     return new Date().getFullYear();
 }

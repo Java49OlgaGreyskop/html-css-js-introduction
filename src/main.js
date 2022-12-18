@@ -1,47 +1,51 @@
 import { Library } from "./data/library.js";
 import { BookForm } from "./ui/BookForm.js";
-import { showErrorMessage } from "./ui/errorMessage.js";
+import { BooksList } from "./ui/BooksList.js";
+import { PagesForm } from "./ui/PagesForm.js";
+import { AuthorForm } from "./ui/AuthorForm.js";
 
 const MIN_Page = 50;
 const MAX_Page = 2000;
 const MIN_YEAR = 1980;
-
-
 const ACTIVE = "active"
 
 
-const pagesFromErrorElement = document.getElementById("pages_form_error");
-const booksListElement = document.getElementById("books-all");
-const authorListElement = document.getElementById("author-books");
-const pagesListElement = document.getElementById("books-with-pages");
+
+const booksListElement = new BooksList ("books-all");
+const listBooksPages = new BooksList("books-with-pages");
+
 const sectionsElement = document.querySelectorAll("section");
 const buttonsMenuElement = document.querySelectorAll(".buttons-menu *");
+const authorFormInputElement = document.querySelectorAll(".form-class-author [name]");
+// const authorListElement = document.getElementById("author-books");
 
 const library = new Library();
 
 const bookForm = new BookForm({idForm: "books_form", idDateInput: "date_input",idYearError: "year_error",
- idPagesInput: "pages_input", idPagesError: "pages_error", minPages: "minPages", maxPages: "maxPages",
-minYear: "minYear"})
+ idPagesInput: "pages_input", idpagesError: "pages_error", minPages: MIN_Page, maxPages: MAX_Page,
+minYear: MIN_YEAR})
 bookForm.addSubmitHandler((book) =>library.receivedBook(book))
 
 
-function onChangePagesFrom(event) {
-    const value = +event.target.value;
-    if (pagesTo && value >= pagesTo) {
-        showErrorMessage(event.target, "pages 'from' must be less than pages 'to'",
-            pagesFromErrorElement);
-    } else {
-        pagesFrom = value;
-    }
+const paramsPages = {
+    idForm: "pages-Form", idPagesFromInput: "pagesFrom", 
+    idPagesToInput:"pagesTo", idErrorMessage: "pages_form_error"
 }
-function onChangePagesTo(event) {
-    const value = +event.target.value;
-    if (pagesFrom && value < pagesFrom) {
-        showErrorMessage(event.target, "Pages'To' must be greater than pages 'From'",
-            pagesFromErrorElement);
-    }
-    pagesTo = value;
+const pagesForm = new PagesForm(paramsPages);
+pagesForm.addSubmitHandler((pagesObj) =>{
+    const books = library.getBooksByPage(pagesObj.pagesFrom,
+        pagesObj.pagesTo);
+        listBooksPages.showBooks(books)
+})
+
+const paramsAuthor ={
+    idForm: "author_form", idAuthor: "author-book"
 }
+const authorForm = new AuthorForm(paramsAuthor);
+authorForm.addSubmitHandler((author) => {
+  const books = library.getAuthor();
+  authorFormInputElement = showBooks(books)
+})
 
 function showSection(index) {
     buttonsMenuElement.forEach(e => e.classList.remove(ACTIVE));
@@ -50,28 +54,12 @@ function showSection(index) {
     sectionsElement[index].hidden = false;
     if (index == 1) {
         const books = library.getAllBooks();
-        booksListElement.innerHTML = getBooksItem(books);
+        booksListElement.showBooks(books)
     }
 }
 
-function getBooksItem(books) {
-    return books.map(book =>
-        `<li class="books-item">
-              <div class="books-item-container">
-                 <p class="books-item-paragraph">Title: ${book.title} </p>
-                 <p class="books-item-paragraph">Author: ${book.author} </p>
-                 <p class="books-item-paragraph">Year publishing: ${book.year}</p>
-                 <p class="books-item-paragraph">Genre: ${book.Genre}</p>
-                 <p class="books-item-paragraph">Pages: ${book.pages}</p>
-              </div>
-          </li>`).join('');
-}
-function onSubmitAuthor(event) {
-    event.preventDefault();
-    const author = Array.from(inputAuthor)[0].value;
-    const books = library.getAuthor(author);
-    authorListElement.innerHTML = getBooksItem(books);
-}
+
+
 let pagesFrom = 0;
 let pagesTo = 0;
 
@@ -81,10 +69,5 @@ function onSubmitPages(event) {
     pagesListElement.innerHTML = getBooksItem(books);
 }
 
-window.onSubmit = onSubmit;
-window.onChange = onChange;
 window.showSection = showSection;
 window.onSubmitPages = onSubmitPages;
-window.onChangePagesFrom = onChangePagesFrom;
-window.onChangePagesTo = onChangePagesTo;
-window.onSubmitAuthor = onSubmitAuthor;
