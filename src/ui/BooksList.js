@@ -1,11 +1,11 @@
-export class BooksList{ 
+export class BooksList {
     #listElement;
-    constructor(idList){
+    constructor(idList) {
         this.#listElement = document.getElementById(idList);
     }
-showBooks(books){
-    this.#listElement.innerHTML =getBooksItem(books);
-}
+    showBooks(books) {
+        this.#listElement.innerHTML = getBooksItem(books);
+    }
 }
 function getBooksItem(books) {
     return books.map(book =>
