@@ -9,9 +9,7 @@ const MAX_Page = 2000;
 const MIN_YEAR = 1980;
 const ACTIVE = "active"
 
-
-
-const booksListElement = new BooksList ("books-all");
+const booksListElement = new BooksList("books-all");
 const listBooksPages = new BooksList("books-with-pages");
 
 const sectionsElement = document.querySelectorAll("section");
@@ -21,30 +19,30 @@ const authorFormInputElement = document.querySelectorAll(".form-class-author [na
 
 const library = new Library();
 
-const bookForm = new BookForm({idForm: "books_form", idDateInput: "date_input",idYearError: "year_error",
- idPagesInput: "pages_input", idpagesError: "pages_error", minPages: MIN_Page, maxPages: MAX_Page,
-minYear: MIN_YEAR})
-bookForm.addSubmitHandler((book) =>library.receivedBook(book))
-
-
+const bookForm = new BookForm({
+    idForm: "books_form", idDateInput: "date_input", idYearError: "year_error",
+    idPagesInput: "pages_input", idpagesError: "pages_error", minPages: MIN_Page, maxPages: MAX_Page,
+    minYear: MIN_YEAR
+})
+bookForm.addSubmitHandler((book) => library.receivedBook(book))
 const paramsPages = {
-    idForm: "pages-Form", idPagesFromInput: "pagesFrom", 
-    idPagesToInput:"pagesTo", idErrorMessage: "pages_form_error"
+    idForm: "pages-Form", idPagesFromInput: "pagesFrom",
+    idPagesToInput: "pagesTo", idErrorMessage: "pages_form_error"
 }
 const pagesForm = new PagesForm(paramsPages);
-pagesForm.addSubmitHandler((pagesObj) =>{
+pagesForm.addSubmitHandler((pagesObj) => {
     const books = library.getBooksByPage(pagesObj.pagesFrom,
         pagesObj.pagesTo);
-        listBooksPages.showBooks(books)
+    listBooksPages.showBooks(books)
 })
 
-const paramsAuthor ={
+const paramsAuthor = {
     idForm: "author_form", idAuthor: "author-book"
 }
 const authorForm = new AuthorForm(paramsAuthor);
 authorForm.addSubmitHandler((author) => {
-  const books = library.getAuthor();
-  authorFormInputElement = showBooks(books)
+    const books = library.getAuthor();
+    authorFormInputElement = showBooks(books)
 })
 
 function showSection(index) {
@@ -58,8 +56,6 @@ function showSection(index) {
     }
 }
 
-
-
 let pagesFrom = 0;
 let pagesTo = 0;
 
@@ -68,6 +64,5 @@ function onSubmitPages(event) {
     const books = library.getBooksByPage(pagesFrom, pagesTo);
     pagesListElement.innerHTML = getBooksItem(books);
 }
-
 window.showSection = showSection;
 window.onSubmitPages = onSubmitPages;

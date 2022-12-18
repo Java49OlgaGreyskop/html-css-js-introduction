@@ -15,7 +15,6 @@ export class PagesForm{
         this.onChangePagesTo();
 }
 
-
 addSubmitHandler(processPagesFun){
     this.#formElement.addEventListener("submit", (event) => {
         event.preventDefault();
