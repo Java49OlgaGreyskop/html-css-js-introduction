@@ -11,11 +11,12 @@ const ACTIVE = "active"
 
 const booksListElement = new BooksList("books-all");
 const listBooksPages = new BooksList("books-with-pages");
+const listBooksAuthor = new BooksList("author-books");
 
 const sectionsElement = document.querySelectorAll("section");
 const buttonsMenuElement = document.querySelectorAll(".buttons-menu *");
 const authorFormInputElement = document.querySelectorAll(".form-class-author [name]");
-// const authorListElement = document.getElementById("author-books");
+
 
 const library = new Library();
 
@@ -41,8 +42,8 @@ const paramsAuthor = {
 }
 const authorForm = new AuthorForm(paramsAuthor);
 authorForm.addSubmitHandler((author) => {
-    const books = library.getAuthor();
-    authorFormInputElement = showBooks(books)
+    const books = library.getAuthor(author);
+    listBooksAuthor.showBooks(books);
 })
 
 function showSection(index) {
